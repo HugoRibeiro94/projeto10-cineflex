@@ -1,30 +1,56 @@
+import axios from "axios";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components"
+import Footer from "../../components/Footer";
+import Seats from "../../components/Seats";
+import { useState } from "react";
 
 export default function SeatsPage() {
 
+    const {idSessao} = useParams();
+    const [seats, setSeats] = useState([]);
+    const [imagem, setImagem] = useState();
+    const [titulo, setTitulo] = useState();
+
+    useEffect(() =>{
+        const promise = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idSessao}/seats`);
+
+        promise.then( (resposta) => {
+            setSeats(resposta.data.seats);
+            console.log(resposta.data);
+            console.log(idSessao);
+            setImagem(resposta.data.movie.posterURL);
+            setTitulo(resposta.data.movie.title);
+        });
+
+        promise.catch( (erro) => {
+            console.log(erro.response.data)
+        });
+
+    },[]);
     return (
         <PageContainer>
             Selecione o(s) assento(s)
-
             <SeatsContainer>
-                <SeatItem>01</SeatItem>
-                <SeatItem>02</SeatItem>
-                <SeatItem>03</SeatItem>
-                <SeatItem>04</SeatItem>
-                <SeatItem>05</SeatItem>
+                {seats.map( seats => 
+                    <Seats
+                        key={seats.id}
+                        name={seats.name}
+                        isAvailable={seats.isAvailable}/>
+                    )}
             </SeatsContainer>
-
             <CaptionContainer>
                 <CaptionItem>
-                    <CaptionCircle />
+                    <CaptionCircleSelecionado />
                     Selecionado
                 </CaptionItem>
                 <CaptionItem>
-                    <CaptionCircle />
+                    <CaptionCircleDisponivel />
                     Disponível
                 </CaptionItem>
                 <CaptionItem>
-                    <CaptionCircle />
+                    <CaptionCircleIndisponivel />
                     Indisponível
                 </CaptionItem>
             </CaptionContainer>
@@ -39,15 +65,7 @@ export default function SeatsPage() {
                 <button>Reservar Assento(s)</button>
             </FormContainer>
 
-            <FooterContainer>
-                <div>
-                    <img src={"https://br.web.img2.acsta.net/pictures/22/05/16/17/59/5165498.jpg"} alt="poster" />
-                </div>
-                <div>
-                    <p>Tudo em todo lugar ao mesmo tempo</p>
-                    <p>Sexta - 14h00</p>
-                </div>
-            </FooterContainer>
+            <Footer imagem={imagem} titulo={titulo}/>
 
         </PageContainer>
     )
@@ -95,9 +113,15 @@ const CaptionContainer = styled.div`
     justify-content: space-between;
     margin: 20px;
 `
-const CaptionCircle = styled.div`
-    border: 1px solid blue;         // Essa cor deve mudar
-    background-color: lightblue;    // Essa cor deve mudar
+const CaptionItem = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+`
+const CaptionCircleSelecionado = styled.div`
+    border: 1px solid rgba(123, 139, 153, 1);         // Essa cor deve mudar
+    background-color: rgba(26, 174, 158, 1);    // Essa cor deve mudar
     height: 25px;
     width: 25px;
     border-radius: 25px;
@@ -106,20 +130,23 @@ const CaptionCircle = styled.div`
     justify-content: center;
     margin: 5px 3px;
 `
-const CaptionItem = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 12px;
-`
-const SeatItem = styled.div`
-    border: 1px solid blue;         // Essa cor deve mudar
-    background-color: lightblue;    // Essa cor deve mudar
+const CaptionCircleDisponivel = styled.div`
+    border: 1px solid rgba(123, 139, 153, 1);         // Essa cor deve mudar
+    background-color: rgba(195, 207, 217, 1);    // Essa cor deve mudar
     height: 25px;
     width: 25px;
     border-radius: 25px;
-    font-family: 'Roboto';
-    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px 3px;
+`
+const CaptionCircleIndisponivel = styled.div`
+    border: 1px solid rgba(247, 197, 43, 1);         // Essa cor deve mudar
+    background-color: rgba(251, 225, 146, 1);    // Essa cor deve mudar
+    height: 25px;
+    width: 25px;
+    border-radius: 25px;
     display: flex;
     align-items: center;
     justify-content: center;

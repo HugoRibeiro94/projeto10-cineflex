@@ -1,16 +1,22 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
+import Footer from "./Footer";
 
 export default function Sessions(props){
-    const {weekday, date, showtimes} = props;
+    const {weekday, date, showtimes, imagem, titulo} = props;
     return(
         <>
             <SessionContainer>
                 <div data-test="movie-day">{weekday} - {date}</div>                            
-                    {showtimes.map( showtimes => 
-                        <ButtonsContainer key = {showtimes.id}>
-                            <button data-test="showtime" >{showtimes.name}</button>
-                        </ButtonsContainer>)}                              
+                    {showtimes.map( showtimes =>
+                        <Link to = {`/assentos/${showtimes.id}`} key={showtimes.id}> 
+                            <ButtonsContainer key = {showtimes.id}>
+                                <button data-test="showtime" >{showtimes.name}</button>
+                            </ButtonsContainer>
+                        </Link>)}                              
             </SessionContainer>
+
+            <Footer imagem={imagem} titulo={titulo}/>
         </>
     )
 }

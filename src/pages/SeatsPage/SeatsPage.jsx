@@ -46,15 +46,15 @@ export default function SeatsPage() {
             </SeatsContainer>
             <CaptionContainer>
                 <CaptionItem>
-                    <CaptionCircleSelecionado />
+                    <CaptionCircle item={'selecionado'} />
                     Selecionado
                 </CaptionItem>
                 <CaptionItem>
-                    <CaptionCircleDisponivel />
+                    <CaptionCircle item={'disponivel'} />
                     Disponível
                 </CaptionItem>
                 <CaptionItem>
-                    <CaptionCircleIndisponivel />
+                    <CaptionCircle item={'indisponivel'} />
                     Indisponível
                 </CaptionItem>
             </CaptionContainer>
@@ -123,9 +123,29 @@ const CaptionItem = styled.div`
     align-items: center;
     font-size: 12px;
 `
-const CaptionCircleSelecionado = styled.div`
-    border: 1px solid rgba(123, 139, 153, 1);         // Essa cor deve mudar
-    background-color: rgba(26, 174, 158, 1);    // Essa cor deve mudar
+const CaptionCircle = styled.div`
+    border: 1px solid ${(p)=>{
+        if(p.item==='disponivel'){
+            return "rgba(123, 139, 153, 1)";
+        }
+        if(p.item==='indisponivel'){
+            return "rgba(247, 197, 43, 1)";
+        }
+        if(p.item==='selecionado'){
+            return "rgba(123, 139, 153, 1)";
+        }
+    }};       // Essa cor deve mudar
+    background-color:  ${(p)=>{
+        if(p.item==='disponivel'){
+            return "rgba(195, 207, 217, 1)";
+        }
+        if(p.item==='indisponivel'){
+            return "rgba(251, 225, 146, 1)";
+        }
+        if(p.item==='selecionado'){
+            return "rgba(26, 174, 158, 1)";
+        }
+    }};   // Essa cor deve mudar
     height: 25px;
     width: 25px;
     border-radius: 25px;
@@ -134,28 +154,7 @@ const CaptionCircleSelecionado = styled.div`
     justify-content: center;
     margin: 5px 3px;
 `
-const CaptionCircleDisponivel = styled.div`
-    border: 1px solid rgba(123, 139, 153, 1);         // Essa cor deve mudar
-    background-color: rgba(195, 207, 217, 1);    // Essa cor deve mudar
-    height: 25px;
-    width: 25px;
-    border-radius: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 5px 3px;
-`
-const CaptionCircleIndisponivel = styled.div`
-    border: 1px solid rgba(247, 197, 43, 1);         // Essa cor deve mudar
-    background-color: rgba(251, 225, 146, 1);    // Essa cor deve mudar
-    height: 25px;
-    width: 25px;
-    border-radius: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 5px 3px;
-`
+
 const FooterContainer = styled.div`
     width: 100%;
     height: 120px;

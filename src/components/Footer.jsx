@@ -2,16 +2,19 @@ import styled from "styled-components";
 
 export default function Footer(props){
 
-    const {imagem, titulo} = props;
+    const {imagem, titulo, weekday, name} = props;
 
     return(
         <>
             <FooterContainer>
                 <div data-test="footer">
-                    <img src={imagem} alt="poster" />
-                </div>
-                <div>
-                    <p>{titulo}</p>
+                    <div>
+                        <img src={imagem} alt="poster" />
+                    </div>
+                    <div>
+                        <p>{titulo}</p>
+                        <p>{weekday} - {name}</p>
+                    </div>
                 </div>
             </FooterContainer>
         </>

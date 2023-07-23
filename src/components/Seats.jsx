@@ -1,12 +1,20 @@
+import { useState } from "react";
 import styled from "styled-components";
 
 export default function Seats(props){
 
     const {name,isAvailable} = props;
+    const [selecionado, setSelecionado] = useState(isAvailable);
+    console.log(selecionado);
 
+    function selecionarAssento(name){
+        console.log(name);
+        setSelecionado(name)
+        console.log(selecionado);
+    }
     return(
         <>
-            <SeatItem isAvailable={isAvailable} >{name}</SeatItem>
+            <SeatItem isAvailable={isAvailable} data-test="seat" onClick={()=>selecionarAssento(name)}>{name}</SeatItem>
         </>
     );
 }

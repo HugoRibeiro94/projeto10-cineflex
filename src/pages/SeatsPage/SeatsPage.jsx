@@ -12,6 +12,8 @@ export default function SeatsPage() {
     const [seats, setSeats] = useState([]);
     const [imagem, setImagem] = useState();
     const [titulo, setTitulo] = useState();
+    const [weekday, setWeekday] = useState();
+    const [name, setName] = useState();
 
     useEffect(() =>{
         const promise = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idSessao}/seats`);
@@ -22,6 +24,8 @@ export default function SeatsPage() {
             console.log(idSessao);
             setImagem(resposta.data.movie.posterURL);
             setTitulo(resposta.data.movie.title);
+            setName(resposta.data.name);
+            setWeekday(resposta.data.day.weekday);
         });
 
         promise.catch( (erro) => {
@@ -65,7 +69,7 @@ export default function SeatsPage() {
                 <button>Reservar Assento(s)</button>
             </FormContainer>
 
-            <Footer imagem={imagem} titulo={titulo}/>
+            <Footer imagem={imagem} titulo={titulo} weekday={weekday} name={name}/>
 
         </PageContainer>
     )

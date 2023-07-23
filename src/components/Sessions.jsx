@@ -7,13 +7,15 @@ export default function Sessions(props){
     return(
         <>
             <SessionContainer>
-                <div data-test="movie-day">{weekday} - {date}</div>                            
+                <div data-test="movie-day">
+                    {weekday} - {date}                            
                     {showtimes.map( showtimes =>
-                        <Link to = {`/assentos/${showtimes.id}`} key={showtimes.id}> 
+                        <Link to = {`/assentos/${showtimes.id}`} key={showtimes.id} data-test="showtime"> 
                             <ButtonsContainer key = {showtimes.id}>
                                 <button data-test="showtime" >{showtimes.name}</button>
                             </ButtonsContainer>
-                        </Link>)}                              
+                        </Link>)}
+                </div>                              
             </SessionContainer>
 
             <Footer imagem={imagem} titulo={titulo}/>

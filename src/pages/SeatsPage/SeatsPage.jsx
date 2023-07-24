@@ -47,10 +47,10 @@ export default function SeatsPage() {
         }
 
         const promise = axios.post('https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many',novaCompra);
-        promise.then(resposta=>alert('compra sucesso'));
-        promise.catch( erro => console.log(erro.response.data));
+        promise.then(resposta=> console.log(resposta.data));
+        promise.catch( erro => alert('nao foi'));
     }
-
+    console.log(seatsSelecionados);
     return (
         <PageContainer>
             Selecione o(s) assento(s)
@@ -81,7 +81,7 @@ export default function SeatsPage() {
             </CaptionContainer>
 
             <FormContainer>
-                <form onSubmit={salvarCompra}>
+                <form >
                     Nome do Comprador:
                     <input 
                         data-test="client-name" 
@@ -104,7 +104,8 @@ export default function SeatsPage() {
                     <Link to="/sucesso">
                         <button 
                             data-test="book-seat-btn" 
-                            type="submit" 
+                            type="submit"
+                            onClick={salvarCompra} 
                             >
                                 Reservar Assento(s)
                         </button>

@@ -4,7 +4,7 @@ import styled from "styled-components";
 export default function Seats(props){
 
     const {name,isAvailable,seatsSelecionados,setSeatsSelecionados,indice} = props;
-    console.log(indice);
+    //console.log(indice);
     const [selecionado, setSelecionado] = useState(isAvailable);
 
     function selecionarAssento(selecionado,seatsSelecionados,indice){
@@ -21,7 +21,7 @@ export default function Seats(props){
             seatsSelecionados.pop();
         }
     } 
-    console.log(seatsSelecionados);
+    //console.log(seatsSelecionados);
     return(
         <>
             <SeatItem isAvailable={selecionado} data-test="seat" onClick={()=>selecionarAssento(selecionado,seatsSelecionados,indice)}>{name}</SeatItem>

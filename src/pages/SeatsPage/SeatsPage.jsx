@@ -6,7 +6,9 @@ import Footer from "../../components/Footer";
 import Seats from "../../components/Seats";
 import { useState } from "react";
 
-export default function SeatsPage() {
+export default function SeatsPage(props) {
+
+    const {sucesso, setSucesso} = props
 
     const {idSessao} = useParams();
     const [seats, setSeats] = useState([]);
@@ -17,12 +19,14 @@ export default function SeatsPage() {
     const [seatsSelecionados, setSeatsSelecionados] = useState([]);
     const [name, setName] = useState("");
     const [cpf, setCpf] = useState("");
+    const [sessao, setSessao] = useState([]);
 
     useEffect(() =>{
         const promise = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idSessao}/seats`);
 
         promise.then( (resposta) => {
             setSeats(resposta.data.seats);
+            setSessao(resposta.data);
             console.log(resposta.data.seats);
             setImagem(resposta.data.movie.posterURL);
             setTitulo(resposta.data.movie.title);
@@ -49,7 +53,19 @@ export default function SeatsPage() {
         }
 
         const promise = axios.post('https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many',novaCompra);
-        promise.then(resposta=> navigate("/sucesso"));
+        promise.then((resposta) => { 
+        
+            const sucesso = {
+                titulo : titulo,
+                weekday : sessao.day.date,
+                horario : horario,
+                ingressos : seatsSelecionados.toString(),
+                name : name, 
+                cpf : cpf
+            }
+            setSucesso(sucesso);
+            navigate("/sucesso")
+        });
         promise.catch( erro => alert('nao foi'));
     }
     console.log(seatsSelecionados);

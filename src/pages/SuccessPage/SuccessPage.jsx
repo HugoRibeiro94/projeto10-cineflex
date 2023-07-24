@@ -1,7 +1,13 @@
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components"
 
 export default function SuccessPage() {
+   
+    const navigate = useNavigate();
 
+    function voltarHome() {
+        navigate("/");
+    }
     return (
         <PageContainer>
             <h1>Pedido feito <br /> com sucesso!</h1>
@@ -25,7 +31,7 @@ export default function SuccessPage() {
                 <p>CPF: 123.456.789-10</p>
             </TextContainer>
 
-            <button>Voltar para Home</button>
+                <button data-test="go-home-btn" onClick={voltarHome}>Voltar para Home</button>
         </PageContainer>
     )
 }

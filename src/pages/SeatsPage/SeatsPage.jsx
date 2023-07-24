@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components"
 import Footer from "../../components/Footer";
 import Seats from "../../components/Seats";
@@ -36,6 +36,8 @@ export default function SeatsPage() {
 
     },[]);
 
+    const navigate = useNavigate();
+
     function salvarCompra(event){
 
         event.preventDefault();
@@ -47,7 +49,7 @@ export default function SeatsPage() {
         }
 
         const promise = axios.post('https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many',novaCompra);
-        promise.then(resposta=> console.log(resposta.data));
+        promise.then(resposta=> navigate("/sucesso"));
         promise.catch( erro => alert('nao foi'));
     }
     console.log(seatsSelecionados);
@@ -81,7 +83,7 @@ export default function SeatsPage() {
             </CaptionContainer>
 
             <FormContainer>
-                <form >
+                <form>
                     Nome do Comprador:
                     <input 
                         data-test="client-name" 
@@ -101,15 +103,9 @@ export default function SeatsPage() {
                         placeholder="Digite seu CPF..." 
                         required
                     />
-                    <Link to="/sucesso">
-                        <button 
-                            data-test="book-seat-btn" 
-                            type="submit"
-                            onClick={salvarCompra} 
-                            >
+                        <button data-test="book-seat-btn" onClick={salvarCompra}>
                                 Reservar Assento(s)
                         </button>
-                    </Link>
                 </form>
             </FormContainer>
 

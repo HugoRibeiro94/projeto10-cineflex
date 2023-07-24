@@ -3,20 +3,28 @@ import styled from "styled-components";
 
 export default function Seats(props){
 
-    const {name,isAvailable} = props;
+    const {name,isAvailable,seatsSelecionados,setSeatsSelecionados,indice} = props;
+    console.log(indice);
     const [selecionado, setSelecionado] = useState(isAvailable);
 
-    function selecionarAssento(selecionado){
-        console.log(selecionado);
+    function selecionarAssento(selecionado,seatsSelecionados,indice){
+        
         if(selecionado===false){
             alert("Esse assento não está disponível");
-        }else{
+        }
+        if(selecionado===true){
             setSelecionado('selecionado');
+            setSeatsSelecionados([...seatsSelecionados,indice]);
+        }
+        if(selecionado==='selecionado'){
+            setSelecionado(true);
+            seatsSelecionados.pop();
         }
     } 
+    console.log(seatsSelecionados);
     return(
         <>
-            <SeatItem isAvailable={selecionado} data-test="seat" onClick={()=>selecionarAssento(selecionado)}>{name}</SeatItem>
+            <SeatItem isAvailable={selecionado} data-test="seat" onClick={()=>selecionarAssento(selecionado,seatsSelecionados,indice)}>{name}</SeatItem>
         </>
     );
 }

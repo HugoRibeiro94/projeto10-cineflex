@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import styled from "styled-components"
 import Footer from "../../components/Footer";
 import Seats from "../../components/Seats";
@@ -13,18 +13,20 @@ export default function SeatsPage() {
     const [imagem, setImagem] = useState();
     const [titulo, setTitulo] = useState();
     const [weekday, setWeekday] = useState();
-    const [name, setName] = useState();
+    const [horario, setHorario] = useState();
+    const [seatsSelecionados, setSeatsSelecionados] = useState([]);
+    const [name, setName] = useState("");
+    const [cpf, setCpf] = useState("");
 
     useEffect(() =>{
         const promise = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idSessao}/seats`);
 
         promise.then( (resposta) => {
             setSeats(resposta.data.seats);
-            console.log(resposta.data);
-            console.log(idSessao);
+            console.log(resposta.data.seats);
             setImagem(resposta.data.movie.posterURL);
             setTitulo(resposta.data.movie.title);
-            setName(resposta.data.name);
+            setHorario(resposta.data.name);
             setWeekday(resposta.data.day.weekday);
         });
 
@@ -33,6 +35,22 @@ export default function SeatsPage() {
         });
 
     },[]);
+
+    function salvarCompra(event){
+
+        event.preventDefault();
+
+        const novaCompra = {
+            ids: seatsSelecionados,
+            name: name,
+            cpf: cpf
+        }
+
+        const promise = axios.post('https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many',novaCompra);
+        promise.then(resposta=>alert('compra sucesso'));
+        promise.catch( erro => console.log(erro.response.data));
+    }
+
     return (
         <PageContainer>
             Selecione o(s) assento(s)
@@ -40,8 +58,11 @@ export default function SeatsPage() {
                 {seats.map( seats => 
                     <Seats
                         key={seats.id}
+                        indice={seats.id}
                         name={seats.name}
-                        isAvailable={seats.isAvailable}/>
+                        isAvailable={seats.isAvailable}
+                        seatsSelecionados={seatsSelecionados}
+                        setSeatsSelecionados={setSeatsSelecionados}/>
                     )}
             </SeatsContainer>
             <CaptionContainer>
@@ -60,16 +81,38 @@ export default function SeatsPage() {
             </CaptionContainer>
 
             <FormContainer>
-                Nome do Comprador:
-                <input placeholder="Digite seu nome..." />
+                <form onSubmit={salvarCompra}>
+                    Nome do Comprador:
+                    <input 
+                        data-test="client-name" 
+                        value={name}
+                        onChange={ e => setName(e.target.value)} 
+                        type="text" 
+                        placeholder="Digite seu nome..." 
+                        required
+                    />
 
-                CPF do Comprador:
-                <input placeholder="Digite seu CPF..." />
-
-                <button>Reservar Assento(s)</button>
+                    CPF do Comprador:
+                    <input 
+                        data-test="client-cpf" 
+                        value={cpf}
+                        onChange={ e => setCpf(e.target.value)}
+                        type="number" 
+                        placeholder="Digite seu CPF..." 
+                        required
+                    />
+                    <Link to="/sucesso">
+                        <button 
+                            data-test="book-seat-btn" 
+                            type="submit" 
+                            >
+                                Reservar Assento(s)
+                        </button>
+                    </Link>
+                </form>
             </FormContainer>
 
-            <Footer imagem={imagem} titulo={titulo} weekday={weekday} name={name}/>
+            <Footer imagem={imagem} titulo={titulo} weekday={weekday} name={horario}/>
 
         </PageContainer>
     )

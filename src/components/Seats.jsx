@@ -4,16 +4,19 @@ import styled from "styled-components";
 export default function Seats(props){
 
     const {name,isAvailable} = props;
-    const [selecionado, setSelecionado] = useState();
+    const [selecionado, setSelecionado] = useState(isAvailable);
 
-    function selecionarAssento(name){
-        console.log(name);
-        setSelecionado(name)
-       
+    function selecionarAssento(selecionado){
+        console.log(selecionado);
+        if(selecionado===false){
+            alert("Esse assento não está disponível");
+        }else{
+            setSelecionado('selecionado');
+        }
     } 
     return(
         <>
-            <SeatItem isAvailable={isAvailable} data-test="seat" onClick={()=>selecionarAssento(name)}>{name}</SeatItem>
+            <SeatItem isAvailable={selecionado} data-test="seat" onClick={()=>selecionarAssento(selecionado)}>{name}</SeatItem>
         </>
     );
 }
@@ -27,6 +30,9 @@ const SeatItem = styled.div`
         if(p.isAvailable===false){
             return "rgba(247, 197, 43, 1)";
         }
+        if(p.isAvailable==='selecionado'){
+            return "rgba(123, 139, 153, 1)"
+        }
     }};    
     background-color: ${(p)=>{
         if(p.isAvailable===true){
@@ -34,6 +40,9 @@ const SeatItem = styled.div`
         }
         if(p.isAvailable===false){
             return "rgba(251, 225, 146, 1)";
+        }
+        if(p.isAvailable==='selecionado'){
+            return "rgba(26, 174, 158, 1)";
         }
     }};    
     height: 25px;
